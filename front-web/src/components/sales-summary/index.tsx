@@ -1,6 +1,6 @@
-import SalesSummaryCard from './sales-summary-card';
 import './styles.css';
 
+import SalesSummaryCard from './sales-summary-card';
 import { ReactComponent as AvatarIcon } from '../../assets/avatar-icon.svg';
 import { ReactComponent as BarChartIcon } from '../../assets/bar-chart-icon.svg';
 import { ReactComponent as DoneIcon } from '../../assets/done-icon.svg';
