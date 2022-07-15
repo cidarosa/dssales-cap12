@@ -4,45 +4,13 @@ import ReactApexChart from 'react-apexcharts';
 import { buildChartSeries, chartOptions, sumSalesByDate } from './helpers';
 import { useEffect, useState } from 'react';
 import { makeRequest } from '../../utils/request';
-import { ChartSeriesData, SalesByDate } from '../../types';
-import { formatPrice } from '../../utils/formatters';
+import { ChartSeriesData, FilterData, SalesByDate } from '../../types';
+import { formatDate, formatPrice } from '../../utils/formatters';
 
-// const initialData = [
-//   {
-//     x: '2020-01-01',
-//     y: 45
-//   },
-//   {
-//     x: '2020-01-02',
-//     y: 55
-//   },
-//   {
-//     x: '2020-01-03',
-//     y: 39
-//   },
-//   {
-//     x: '2020-01-04',
-//     y: 25
-//   },
-//   {
-//     x: '2020-01-05',
-//     y: 35
-//   },
-//   {
-//     x: '2020-01-06',
-//     y: 20
-//   },
-//   {
-//     x: '2020-01-07',
-//     y: 50
-//   },
-//   {
-//     x: '2020-01-01',
-//     y: 30
-//   }
-// ];
-
-function SalesByDateComponent() {
+type Props = {
+  filterData?: FilterData;
+};
+function SalesByDateComponent({ filterData }: Props) {
   const [chartSeries, setChartSeries] = useState<ChartSeriesData[]>([]);
 
   const [totalSum, setTotalSum] = useState(0);
@@ -55,6 +23,9 @@ function SalesByDateComponent() {
         setChartSeries(newChartSeries);
         const newTotalSum = sumSalesByDate(response.data);
         setTotalSum(newTotalSum);
+      })
+      .catch(() => {
+        console.error('Error to fetch sales by date');
       });
   }, []);
 
@@ -62,7 +33,11 @@ function SalesByDateComponent() {
     <div className="base-card sales-by-date-container">
       <div>
         <h4 className="sales-by-date-title">Evolução de vendas</h4>
-        <span className="sales-by-date-period">01/01/2017 a 31/01/2017</span>
+        {filterData?.dates && (
+          <span className="sales-by-date-period">
+            {formatDate(filterData?.dates?.[0])} até {formatDate(filterData?.dates?.[1])}
+          </span>
+        )}
       </div>
 
       <div className="sales-by-date-data">
