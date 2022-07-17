@@ -23,7 +23,7 @@ function App() {
         <Filter onFilterChange={onFilterChange} />
         <SalesByDateComponent filterData={filterData} />
         <div className="sales-overview-container">
-          <SalesSummary />
+          <SalesSummary filterData={filterData} />
           <PieChartCard
             name="Loja"
             labels={['Uberlânbdia', 'Araguari', 'Uberaba']}
