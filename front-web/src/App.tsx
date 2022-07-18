@@ -20,10 +20,15 @@ function App() {
   const params = useMemo(() => buildFilterParams(filterData), [filterData]);
 
   useEffect(() => {
-    makeRequest.get<SalesByStore[]>('/sales/by-store', { params }).then((response) => {
-      const newSalesByStore = buildSalesByStoreChart(response.data);
-      setSalesByStore(newSalesByStore);
-    });
+    makeRequest
+      .get<SalesByStore[]>('/sales/by-store', { params })
+      .then((response) => {
+        const newSalesByStore = buildSalesByStoreChart(response.data);
+        setSalesByStore(newSalesByStore);
+      })
+      .catch(() => {
+        console.error('Error to fetch sales by store');
+      });
   }, [params]);
 
   useEffect(() => {
@@ -32,6 +37,9 @@ function App() {
       .then((response) => {
         const newSalesByPaymentMethod = buildSalesByPaymentMethod(response.data);
         setSalesByPaymentMethod(newSalesByPaymentMethod);
+      })
+      .catch(() => {
+        console.error('Error to fetch sales by payment method');
       });
   }, [params]);
 
@@ -54,7 +62,7 @@ function App() {
             series={salesByPaymentMethod?.series}
           />
         </div>
-        <SalesTable />
+        <SalesTable filterData={filterData} />
       </div>
     </>
   );
